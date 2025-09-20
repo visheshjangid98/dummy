@@ -1,144 +1,160 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="favicon.png" type="image/x-icon">
-    <title>Trace Mc</title>
+    <title>Support - Trace MC</title>
     <link rel="icon" type="image/png" href="media/favicon.png">
+    <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/support.css">
-  </head>
-
-  <body>
-
-    <div class="box">
-      <h1 class="form_headline">Support Forum</h1>
-      <form class="form_box" action="/support-send" method="post" novalidate="">
-        <span class="two_block">
-          <input type="text" name="mcName" id="mcName" required="" pattern="[a-zA-Z]{3,12}" placeholder="Minecraft Username *">
-          <input type="text" name="dcName" id="dcName" placeholder="Discord Username">
-        </span>
-        <input type="email" name="email" id="email" required="" placeholder="Email *">
-        <span class="two_block t2">
-          <span class="country">
-            <div class="type_selector">
-              <span class="selected">
-                <p>Support type *</p>
-              </span>
-              <img id="options-image" src="media/svg/arrow2.svg" alt="">
+</head>
+<body>
+    <%- include('components/navbar', { user: typeof user !== 'undefined' ? user : null }) %>
+    
+    <main class="main-content">
+        <div class="support-container">
+            <div class="support-header">
+                <h1>Support Center</h1>
+                <p>Need help? We're here to assist you with any questions or issues.</p>
             </div>
-            <div class="options-mask option-mask-hidden">
-              <div class="options">
-                <span class="option" data-value="home"><img class="opi" src="media/svg/home.svg" alt="">
-                  <p class="opi-p">General Support</p>
-                </span>
-                <span class="option" data-value="home"><img class="opi" src="media/svg/home.svg" alt="">
-                  <p class="opi-p">Buy Support</p>
-                </span>
-                <span class="option" data-value="pro"><img class="opi" src="media/svg/status.svg" alt="">
-                  <p class="opi-p">Bug Report</p>
-                </span>
-                <span class="option" data-value="pro"><img class="opi" src="media/svg/status.svg" alt="">
-                  <p class="opi-p">Suggestion</p>
-                </span>
-              </div>
+            
+            <div class="support-content">
+                <form class="support-form" action="/support-send" method="post" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="mcName" class="form-label">Minecraft Username</label>
+                            <input
+                                type="text"
+                                id="mcName"
+                                name="mcName"
+                                class="form-input"
+                                required
+                                pattern="[a-zA-Z0-9]{3,16}"
+                                placeholder="Your Minecraft username"
+                            />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="dcName" class="form-label">Discord Username</label>
+                            <input
+                                type="text"
+                                id="dcName"
+                                name="dcName"
+                                class="form-input"
+                                placeholder="Your Discord username (optional)"
+                            />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-input"
+                            required
+                            placeholder="your.email@example.com"
+                        />
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category" class="form-label">Support Category</label>
+                            <div class="select-wrapper">
+                                <select id="category" name="c" class="form-select" required>
+                                    <option value="">Select a category</option>
+                                    <option value="general">General Support</option>
+                                    <option value="purchase">Purchase Support</option>
+                                    <option value="bug">Bug Report</option>
+                                    <option value="suggestion">Suggestion</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="topic" class="form-label">Topic</label>
+                            <input
+                                type="text"
+                                id="topic"
+                                name="topic"
+                                class="form-input"
+                                placeholder="Brief topic description"
+                            />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea
+                            id="description"
+                            name="Description"
+                            class="form-textarea"
+                            rows="6"
+                            required
+                            placeholder="Please describe your issue or question in detail..."
+                        ></textarea>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary support-btn" onclick="submit_form()">
+                        Submit Support Request
+                    </button>
+                </form>
             </div>
-          </span>
-          <input hidden="" type="text" name="c" id="c">
-          <input type="text" id="topic" name="topic" pattern="[0-9]{10, 13}" placeholder="Topic">
-        </span>
-        <textarea name="Description" id="desc" rows="5" placeholder="Description *" required="" pattern="[a-zA-Z0-9]{3,12}"></textarea>
-      </form>
-      <button class="form_submit" onclick="submit_form()">Submit form</button>
-      <p class="form_more"></p>
+        </div>
+    </main>
+    
+    <div class="alert alert-error support-alert hidden" id="error-alert">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span id="error_msg">Something went wrong</span>
     </div>
-    <div class="error_box hidden">
-      <img src="media/svg/error.svg" alt="">
-      <p id="error_msg">Something went wrong</p>
-    </div>
+    
     <script>
-      function close() {
-        setTimeout(() => {
-          box.classList.add("hidden");
-        }, 2000);
-      }
-      const error = document.getElementById("error_msg"); // use getElementById instead
-      const box = document.querySelector(".error_box"); // use querySelector instead
-      function open1() {
-        document
-          .querySelector("#options-image")
-          .setAttribute("style", "Rotate:-90deg");
-        document
-          .querySelector(".options-mask")
-          .classList.remove("option-mask-hidden");
-      }
-
-      function close1() {
-        document
-          .querySelector("#options-image")
-          .setAttribute("style", "Rotate:90deg");
-        document
-          .querySelector(".options-mask")
-          .classList.add("option-mask-hidden");
-      }
-
-      function select_options() {
-        let value = document.querySelector(".options-mask").classList;
-        let yes = value.value.indexOf("option-mask-hidden");
-        if (yes == -1) {
-          close1();
-        } else {
-          open1();
+        const errorMsg = document.getElementById("error_msg");
+        const errorAlert = document.getElementById("error-alert");
+        
+        function close() {
+            setTimeout(() => {
+                errorAlert.classList.add("hidden");
+            }, 3000);
         }
-      }
-      document.querySelector(".options-mask").addEventListener("Click", () => {
-        close1();
-      });
-      let options = document.querySelectorAll(".option");
-      options.forEach((e) => {
-        e.addEventListener("click", () => {
-          let a = e.innerHTML;
-          const ca = e.getAttribute("data-value");
-          document.querySelector("#c").setAttribute("value", ca);
-          console.log(ca);
-          document.querySelector(".selected").innerHTML = a;
-        });
-      });
-      document.querySelector(".country").addEventListener("click", () => {
-        select_options();
-      });
+        
+        function submit_form() {
+            const mcName = document.getElementById("mcName").value;
+            const email = document.getElementById("email").value;
+            const category = document.getElementById("category").value;
+            const description = document.getElementById("description").value;
 
-      function submit_form() {
-        const mcName = document.getElementById("mcName").value;
-        const email = document.getElementById("email").value;
-        const category = document.querySelector("#c").value;
-        const detail = document.getElementById("desc").value
-
-        if (!mcName) {
-          error.innerText = "Minecarft username is required";
-          box.classList.remove("hidden");
-          close();
-        } else if (mcName.length < 3) {
-          error.innerText = "Username is too short";
-          box.classList.remove("hidden");
-          close();
-        } else if (!email) {
-          error.innerText = "Email is required";
-          box.classList.remove("hidden");
-          close();
-        } else if (email.indexOf("@") === -1 || email.indexOf(".") === -1) {
-          error.innerText = "Email is not valid";
-          box.classList.remove("hidden");
-          close();
-        } else if (!category) {
-          error.innerText = "Category is required";
-          box.classList.remove("hidden");
-          close();
-        } else if (!detail) {
-          error.innerText = "Details are required";
-          box.classList.remove("hidden");
-          close();
-        } else {
-          document.querySelector(".form_box").submit();
+            if (!mcName) {
+                errorMsg.textContent = "Minecraft username is required";
+                errorAlert.classList.remove("hidden");
+                close();
+            } else if (mcName.length < 3) {
+                errorMsg.textContent = "Username is too short";
+                errorAlert.classList.remove("hidden");
+                close();
+            } else if (!email) {
+                errorMsg.textContent = "Email is required";
+                errorAlert.classList.remove("hidden");
+                close();
+            } else if (email.indexOf("@") === -1 || email.indexOf(".") === -1) {
+                errorMsg.textContent = "Please enter a valid email address";
+                errorAlert.classList.remove("hidden");
+                close();
+            } else if (!category) {
+                errorMsg.textContent = "Please select a support category";
+                errorAlert.classList.remove("hidden");
+                close();
+            } else if (!description) {
+                errorMsg.textContent = "Please describe your issue";
+                errorAlert.classList.remove("hidden");
+                close();
+            } else {
+                document.querySelector(".support-form").submit();
+            }
         }
-      }
     </script>
-  
+</body>
+</html>

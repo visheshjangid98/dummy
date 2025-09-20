@@ -1,212 +1,230 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-:root {
-    --nice-padding: 6rem;
-    --roundness: 0.5rem;
-    /* --accent1: #02db02; */
-    --accent1: #02fbff;
-    --accent2: #039b9e;
-    --accent2_transp: #02fbff53;
-    --background1: #212529;
-    --background2: #16191b;
-    --underline: white;
-    --background3: #101214;
-    color-scheme: dark;
-}
-::selection{
-    background-color: transparent;
-    color: white;
-}
-html{
-    height: 100svh;
-}
-body{
-    height: 100%;
-    background-color: var(--background3);
+/* Payment Confirmation Page Styles */
+
+.main-content {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: var(--spacing-lg);
 }
-main{
-    width: 700px;
-    min-height: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-.hero-head{
-width: 100%;
-height: 70px;
-background-color: #212529;
-border-radius: var(--roundness);
-display: flex;
-justify-content: center;
-align-items: center;
-}
-.hero-head h1{
-    font-size: 1.5rem;
-    font-family: "poppins";
-    font-weight: 400;
 
+.confirm-container {
+    width: min(1000px, 95vw);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
 }
-.hero-body{
-    width: 100%;
-    min-height: 300px;
-    display: flex;
-    gap: 16px;
+
+.confirm-header {
+    background: var(--secondary-bg);
+    padding: var(--spacing-2xl);
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
 }
-.hero-body-info{
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem 3rem;
-    box-sizing: border-box;
-    background-color: var(--background2);
-    border-radius: var(--roundness);
-    justify-content: space-between;
-    align-items: center;
-    h2,h4{
-        margin: 0;
-    }
+
+.confirm-header h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
-.hero-body-info h4{
-display: flex;
-font-size: 1.2rem;
-font-family: "poppins";
-font-weight: 400;  
-align-items: center;
-gap: 0.8rem;
-p{
-    color: #02fbff;
+
+.confirm-header p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-lg);
     margin: 0;
 }
 
+.confirm-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-2xl);
+    padding: var(--spacing-2xl);
 }
-.hero-body-name{
+
+.payment-info {
     display: flex;
     flex-direction: column;
-    padding: 1.5rem 3rem;
-    box-sizing: border-box;
-    background-color: var(--background2);
-    border-radius: var(--roundness);
-    width: 100%;
-    justify-content: center;
-    align-items: center;  
-}
-
-
-
-.form-div{
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
-    width: 100%;
-}
-.form_box{
-    display: flex;
-    justify-content: center;
     align-items: center;
+    gap: var(--spacing-xl);
+}
+
+.amount-display {
+    text-align: center;
+    padding: var(--spacing-lg);
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    width: 100%;
+}
+
+.amount-label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-sm);
+}
+
+.amount-value {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+.qr-section {
+    text-align: center;
+}
+
+.qr-container {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    display: inline-block;
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--shadow-md);
+}
+
+.qr-code {
+    width: 200px;
+    height: 200px;
+    display: block;
+}
+
+.qr-instruction {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin: 0;
+}
+
+.payment-methods {
+    width: 100%;
+    text-align: center;
+}
+
+.payment-methods-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+}
+
+.confirmation-form-container {
+    display: flex;
     flex-direction: column;
-    gap:1.6rem;
-    width: 100%;
+    justify-content: center;
 }
-input{
-    padding: 1rem 1rem;
-    padding-bottom: 0.6rem;
-    box-sizing: border-box;
-    border: none;
-    border-bottom: 1px solid var(--underline);
-    width: 100%;
-    background-color: transparent;
+
+.confirmation-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
 }
-input:user-invalid, textarea:user-invalid{
-    border-bottom: 2px solid #FF5353;
-    color:  #FF5353;
-}
-input:user-invalid::placeholder, textarea:user-invalid::placeholder{
-    color: #fc5555a1;
-}
-input:user-valid, textarea:user-valid{
-    border-bottom: 2px solid var(--accent1);
-    color: var(--accent1);
-}
-input:focus{
-    outline: none;
-    background-color: var(--background3);
-}
-.form_submit{
-    
-    width: 100%;
-    margin: 1rem 0;
-    border-radius: var(--roundness);
-    font-family: "poppins", sans-serif;
-    background-color: var(--accent1);
-    color: var(--background2);
-    border: none;
-    padding: 0.6rem 1.5rem;
-    cursor: pointer;
-    font-size: 1rem;
+
+.confirm-btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: var(--font-size-lg);
     font-weight: 600;
-    
 }
-.form_submit:hover{
-    background-color:#5afcff;
-}
-.terms-div{
+
+.checkbox-group {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0.6rem;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
 }
-#terms{
+
+.checkbox-input {
+    width: auto;
+    margin: 0;
+    accent-color: var(--accent-primary);
+}
+
+.checkbox-label {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: 1.4;
     cursor: pointer;
 }
-label{
-    text-wrap: nowrap;
-    font-family: "poppins", sans-serif;
-    font-size: 0.9rem;
-}
-label a{
-    color: var(--accent1);
+
+.checkbox-label a {
+    color: var(--accent-primary);
     text-decoration: none;
 }
-@media (max-width:750px) {
-.hero-body{
-    flex-direction: column;
-    gap: 0;
+
+.checkbox-label a:hover {
+    text-decoration: underline;
 }
-.hero-body-info{
-width: 100%;
-gap: 1rem;
-border-radius:var(--roundness) var(--roundness) 0 0 ;
-}
-.hero-body-name{
-    border-radius: 0 0 var(--roundness) var(--roundness);
-    padding: 2rem;
-}
-}
-.error_box{
+
+.confirm-alert {
     position: fixed;
-    bottom: 0;
-    left: 0;
+    bottom: var(--spacing-lg);
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    height: 1.5rem;
-    width: 100%;
-    background-color: #FF5353;
-    color: white;
-    font-size: 1rem;
     align-items: center;
-    gap: 0.6rem;
-    padding: 1rem 2rem;
-    font-weight: 600;
-    font-family: "poppins", sans-serif;
-    transition: all 600ms ease-in-out;
-    opacity: 100%;
-    img{
-        height: 1.2rem;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    transition: all var(--transition-normal);
+    max-width: 400px;
+    width: calc(100% - 2rem);
+}
+
+.confirm-alert.hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(100px);
+    visibility: hidden;
+}
+
+.confirm-alert svg {
+    flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .confirm-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
+    }
+    
+    .confirm-header h1 {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .amount-value {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .qr-code {
+        width: 150px;
+        height: 150px;
     }
 }
-.hidden{
-    opacity: 0%;
-    transform: translateY(100%);
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: var(--spacing-md);
+    }
+    
+    .confirm-container {
+        width: 100%;
+    }
+    
+    .confirm-header {
+        padding: var(--spacing-xl);
+    }
+    
+    .confirm-content {
+        padding: var(--spacing-xl);
+    }
+    
+    .confirm-header h1 {
+        font-size: var(--font-size-xl);
+    }
 }

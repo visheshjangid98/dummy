@@ -3,80 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trace Mc</title>
+    <title>Payment Confirmation - Trace MC</title>
     <link rel="icon" type="image/png" href="media/favicon.png">
+    <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/confirm.css">
 </head>
 <body>
-    <main class="hero">
-        <div class="hero-head">
-            <h1>Confirm Purchase</h1>
-        </div>
-        <div class="hero-body">
-            <div class="hero-body-info">
-<h4><p>Pay : </p><%= price %> INR</h4>
-<img src="<%= qrCodeImage %>" alt="qrcode">
-<img src="media/paymentmethods.png" alt="paymentmethods">
+    <main class="main-content">
+        <div class="confirm-container">
+            <div class="confirm-header">
+                <h1>Payment Confirmation</h1>
+                <p>Complete your payment using the QR code below</p>
             </div>
-            <div class="hero-body-name">
-                <div class="form-div">
-
-                    <form class="form_box" action="/confirmed" method="post" novalidate>
-                        <input type="text" id="Id" name="TXNId"  required placeholder="Transition ID *" >
-                        <input type="text" id="cId" required placeholder="Confirm Transition ID *">
-                        <input type="hidden" value="<%= orderId %>" name="orderId">
-                    </form>
-                    <button class="form_submit" onclick="submit_form()">Confirm</button>
-                    <div class="terms-div">
-                        <input type="checkbox" name="terms" id="terms">
-                        <label for="terms">I accept the <a href="/terms">terms and conditions</a></label>
+            
+            <div class="confirm-content">
+                <div class="payment-info">
+                    <div class="amount-display">
+                        <span class="amount-label">Amount to Pay</span>
+                        <span class="amount-value">₹<%= price %></span>
                     </div>
+                    
+                    <div class="qr-section">
+                        <div class="qr-container">
+                            <img src="<%= qrCodeImage %>" alt="Payment QR Code" class="qr-code">
+                        </div>
+                        <p class="qr-instruction">Scan with any UPI app to pay</p>
+                    </div>
+                    
+                    <div class="payment-methods">
+                        <img src="media/paymentmethods.png" alt="Supported Payment Methods" class="payment-methods-img">
+                    </div>
+                </div>
+                
+                <div class="confirmation-form-container">
+                    <form class="confirmation-form" action="/confirmed" method="post" novalidate>
+                        <div class="form-group">
+                            <label for="txnId" class="form-label">Transaction ID</label>
+                            <input
+                                type="text"
+                                id="txnId"
+                                name="TXNId"
+                                class="form-input"
+                                required
+                                placeholder="Enter transaction ID from your payment app"
+                            />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmTxnId" class="form-label">Confirm Transaction ID</label>
+                            <input
+                                type="text"
+                                id="confirmTxnId"
+                                class="form-input"
+                                required
+                                placeholder="Re-enter transaction ID to confirm"
+                            />
+                        </div>
+                        
+                        <input type="hidden" value="<%= orderId %>" name="orderId">
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" class="checkbox-input">
+                            <label for="terms" class="checkbox-label">
+                                I confirm that I have completed the payment and accept the <a href="/terms" target="_blank">terms and conditions</a>
+                            </label>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary confirm-btn" onclick="submit_form()">
+                            Confirm Payment
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </main>
-    <div class="error_box hidden">
-        <img src="media/svg/error.svg" alt="" />
-        <p id="error_msg">Something went wrong</p>
-      </div>
+    
+    <div class="alert alert-error confirm-alert hidden" id="error-alert">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span id="error_msg">Something went wrong</span>
+    </div>
+    
+    <script>
+        const errorMsg = document.getElementById("error_msg");
+        const errorAlert = document.getElementById("error-alert");
+        
+        function close() {
+            setTimeout(() => {
+                errorAlert.classList.add("hidden");
+            }, 3000);
+        }
+        
+        function submit_form() {
+            const txnId = document.getElementById("txnId").value;
+            const confirmTxnId = document.getElementById("confirmTxnId").value;
+            const termsCheckbox = document.getElementById("terms");
+
+            if (!txnId) {
+                errorMsg.textContent = "Transaction ID is required";
+                errorAlert.classList.remove("hidden");
+                close();
+            } else if (!confirmTxnId) {
+                errorMsg.textContent = "Please confirm your transaction ID";
+                errorAlert.classList.remove("hidden");
+                close();
+            } else if (txnId !== confirmTxnId) {
+                errorMsg.textContent = "Transaction IDs do not match";
+                errorAlert.classList.remove("hidden");
+                close();
+            } else if (!termsCheckbox.checked) {
+                errorMsg.textContent = "You must accept the terms and conditions";
+                errorAlert.classList.remove("hidden");
+                close();
+            } else {
+                document.querySelector(".confirmation-form").submit();
+            }
+        }
+    </script>
 </body>
-<script>
-     const error = document.getElementById("error_msg"); // use getElementById instead
-      const box = document.querySelector(".error_box"); // use querySelector instead
-      function close() {
-        setTimeout(() => {
-          box.classList.add("hidden");
-        }, 2000);
-      }
-      function submit_form() {
-        const TXNId = document.getElementById("Id").value;
-        const c_TXNId = document.getElementById("cId").value;
-        const termsCheckbox = document.getElementById("terms");
-
-        if (!TXNId) {
-          error.innerText = "Transition Id is required";
-          box.classList.remove("hidden");
-          close();
-        } else if (!c_TXNId) {
-          error.innerText = "Please confirm Transition Id";
-
-          box.classList.remove("hidden");
-          close();
-        }
-         else if (TXNId != c_TXNId) {
-          error.innerText = "Transition Id does not match";
-
-          box.classList.remove("hidden");
-          close();
-        }
-
-         else if (!termsCheckbox.checked) {
-          error.innerText = "You must accept the terms and conditions";
-          box.classList.remove("hidden");
-          close();
-        } else {
-          document.querySelector(".form_box").submit();
-        }
-      }
-</script>
 </html>

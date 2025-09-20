@@ -15,7 +15,8 @@ const router = express.Router()
 router.get('/store',Guard, async (reg, res)=>{
     let rank = await createRanklist()
     let coins = await createCoinlist()
-        res.render("shop", {ranks : rank, coin: coins})
+    const values = jwt.decode(req.cookies.uid)
+        res.render("shop", {ranks : rank, coin: coins, user: values})
     
     })
 router.get("/store/product",Guard, async (req, res)=>{
@@ -50,7 +51,10 @@ router.post("/confirmed",async (req,res)=>{
     }
 })
 
-router.get("/status", statusList)
+router.get("/status", Guard, async (req, res) => {
+    const values = jwt.decode(req.cookies.uid)
+    await statusList(req, res)
+})
 // router.post("/payment", async(req,res) => {
 //     let a = await req.body
 //     let username = a.username

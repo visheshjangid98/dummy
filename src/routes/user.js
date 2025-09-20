@@ -19,7 +19,7 @@ router.get("/login", (req,res) =>{
 router.get("/profile",Guard, (req,res)=>{
     const value = jwt.decode(req.cookies.uid)
     console.log(value)
-    res.render("profile", {name:value.username, email:value.email})
+    res.render("profile", {name:value.username, email:value.email, user: value})
 })
 router.get("/reset", (req, res) => {
     res.render("reset")
@@ -60,4 +60,10 @@ router.post("/reset-submit",async (req, res)=>{
     }
    
 })
+
+router.post("/logout", (req, res) => {
+    res.clearCookie("uid");
+    res.redirect("/");
+});
+
 export default router;
